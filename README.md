@@ -15,10 +15,16 @@ Exports and Imports GPO settings and values to-from a CSV file.
 Manual Installation
 `iex (New-Object Net.WebClient).DownloadString("https://github.com/merddyin/GPOMigration/raw/master/Install.ps1")`
 
-Or clone this repository to your local machine, extract, go to the .\releases\GPOMigration directory
-and import the module to your session to test, but not install this module.
+Alternatively, you can access the releases at the right side of this page to download the file manually. This module has NOT been published to the gallery.
 
 ## Features
+
+- Exports ADMX and registry-based prefernces to Excel (or CSV)
+- Accepts an Excel file (or CSV) with the correct formatting and creates a new GPO with the indicated settings
+- Compare settings and values between two exported GPO collections
+- Create a new template file to build out desired settings from scratch
+
+Note: Module is not capable of exporting or processing custom ADMX templates, nor does it capture anything not based on a registry value. Exporting and importing of policy preferences is best effort and requires access to write to the SYSVOL.
 
 ## Versions
 

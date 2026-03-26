@@ -4,7 +4,7 @@
 
 # Some general variables
 $ModuleName = 'GPOMigration'
-$DownloadURL = 'https://github.com/merddyin/GPOMigration/raw/master/release/GPOMigration-current.zip'
+$DownloadURL = 'https://github.com/merddyin/GPOMigration/archive/refs/tags/v0.0.1.zip'
 
 # Download and install the module
 $webclient = New-Object System.Net.WebClient
