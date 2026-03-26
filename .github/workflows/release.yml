@@ -1,0 +1,56 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish_psgallery:
+        description: Publish module to PSGallery
+        required: false
+        default: false
+        type: boolean
+  push:
+    tags:
+      - v*
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        shell: pwsh
+        run: ./Build.ps1 -Test
+
+      - name: Build zip artifact
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.publish_psgallery) }}
+        shell: pwsh
+        run: ./Build.ps1 -BuildModule
+
+      - name: Build zip and nupkg artifacts
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_psgallery }}
+        shell: pwsh
+        env:
+          PSGALLERY_API_KEY: ${{ secrets.PSGALLERY_API_KEY }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:PSGALLERY_API_KEY)) {
+            throw 'PSGALLERY_API_KEY secret is required when publish_psgallery is true.'
+          }
+          ./Build.ps1 -BuildModule -CreatePSGalleryPackage -UploadPSGallery -PSGalleryApiKey $env:PSGALLERY_API_KEY
+
+      - name: Upload zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GPOMigration-zip
+          path: release/GPOMigration/*.zip
+          if-no-files-found: error
+
+      - name: Upload nupkg artifact
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_psgallery }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: GPOMigration-nupkg
+          path: release/GPOMigration/packages/*.nupkg
+          if-no-files-found: error
