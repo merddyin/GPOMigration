@@ -12,9 +12,6 @@ Exports and Imports GPO settings and values to-from a CSV file.
 
 ## Installation
 
-Powershell Gallery (PS 5.0, Preferred method)
-`install-module GPOMigration`
-
 Manual Installation
 `iex (New-Object Net.WebClient).DownloadString("https://github.com/merddyin/GPOMigration/raw/master/Install.ps1")`
 
@@ -25,7 +22,7 @@ and import the module to your session to test, but not install this module.
 
 ## Versions
 
-0.0.1 - Initial Release
+0.0.1 - Initial Release (Alpha)
 
 ## Contribute
 
