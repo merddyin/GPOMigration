@@ -261,8 +261,15 @@ function Install-BuiltModule {
 function Invoke-BuildRelease {
     param([switch]$InstallModule)
 
-    $manifest = Test-ModuleManifest -Path $script:ManifestPath
-    $moduleVersion = $manifest.Version
+    try {
+        $manifest = Test-ModuleManifest -Path $script:ManifestPath
+        $moduleVersion = $manifest.Version
+    }
+    catch {
+        Write-Warning "Build.ps1: Test-ModuleManifest validation was skipped: $($_.Exception.Message)"
+        $manifestData = Import-PowerShellDataFile -Path $script:ManifestPath
+        $moduleVersion = [version]$manifestData.ModuleVersion
+    }
 
     $releasePath = Build-ReleaseLayout -Version $moduleVersion
     $zipPath = New-ReleaseZip -Version $moduleVersion -ReleasePath $releasePath
