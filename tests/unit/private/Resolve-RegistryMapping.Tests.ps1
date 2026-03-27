@@ -4,6 +4,9 @@ Describe 'Resolve-RegistryMapping' -Tag 'UnitTest' {
     BeforeAll {
         . (Join-Path $PSScriptRoot '..\..\..\src\private\Get-CallerPreference.ps1')
         . (Join-Path $PSScriptRoot '..\..\..\src\private\Resolve-RegistryMapping.ps1')
+
+    # Ensure command exists so Mock/Should-Invoke work on runners without GroupPolicy RSAT.
+    function Get-GPOReport { }
     }
 
     BeforeEach {

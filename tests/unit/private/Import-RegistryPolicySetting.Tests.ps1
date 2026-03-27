@@ -5,6 +5,9 @@ Describe 'Import-RegistryPolicySetting' -Tag 'UnitTest' {
         . (Join-Path $PSScriptRoot '..\..\..\src\other\PreLoad.ps1')
         . (Join-Path $PSScriptRoot '..\..\..\src\private\Get-CallerPreference.ps1')
         . (Join-Path $PSScriptRoot '..\..\..\src\private\Import-RegistryPolicySetting.ps1')
+
+        # Ensure command exists so Mock/Should-Invoke work on runners without GroupPolicy RSAT.
+        function Set-GPRegistryValue { }
     }
 
     It 'calls Set-GPRegistryValue for computer scope with typed DWORD value' {
