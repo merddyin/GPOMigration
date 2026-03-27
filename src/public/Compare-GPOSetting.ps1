@@ -45,20 +45,22 @@ function Compare-GPOSetting {
 
     process {
         Write-Verbose "Compare-GPOSetting: loading reference file '$ReferencePath'."
-        $refRows = if ($ReferencePath -like '*.xlsx') {
-            Write-Warning "Compare-GPOSetting: Excel file reading is not yet implemented. Please convert to CSV."
-            @()
-        } else {
-            @(Import-Csv -LiteralPath $ReferencePath)
-        }
+        $refRows = @(
+            if ($ReferencePath -like '*.xlsx') {
+                $null = Write-Warning "Compare-GPOSetting: Excel file reading is not yet implemented. Please convert to CSV."
+            } else {
+                Import-Csv -LiteralPath $ReferencePath
+            }
+        )
 
         Write-Verbose "Compare-GPOSetting: loading difference file '$DifferencePath'."
-        $diffRows = if ($DifferencePath -like '*.xlsx') {
-            Write-Warning "Compare-GPOSetting: Excel file reading is not yet implemented. Please convert to CSV."
-            @()
-        } else {
-            @(Import-Csv -LiteralPath $DifferencePath)
-        }
+        $diffRows = @(
+            if ($DifferencePath -like '*.xlsx') {
+                $null = Write-Warning "Compare-GPOSetting: Excel file reading is not yet implemented. Please convert to CSV."
+            } else {
+                Import-Csv -LiteralPath $DifferencePath
+            }
+        )
 
         if ($refRows.Count -eq 0 -or $diffRows.Count -eq 0) {
             Write-Warning "Compare-GPOSetting: one or both files are empty or unreadable."

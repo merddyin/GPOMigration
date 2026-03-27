@@ -83,13 +83,14 @@ function Import-GPOSetting {
         foreach ($filePath in $filePaths) {
             Write-Verbose "Import-GPOSetting: reading '$filePath'."
 
-            $rows = if ($filePath -like '*.xlsx') {
-                # Excel file — would require OfficeIMO to read; for now, emit a warning
-                Write-Warning "Import-GPOSetting: Excel file reading is not yet implemented. Please export to CSV or manually convert to CSV."
-                @()
-            } else {
-                Import-Csv -LiteralPath $filePath
-            }
+            $rows = @(
+                if ($filePath -like '*.xlsx') {
+                    # Excel file — would require OfficeIMO to read; for now, emit a warning
+                    $null = Write-Warning "Import-GPOSetting: Excel file reading is not yet implemented. Please export to CSV or manually convert to CSV."
+                } else {
+                    Import-Csv -LiteralPath $filePath
+                }
+            )
 
             if ($rows.Count -eq 0) {
                 Write-Verbose "Import-GPOSetting: '$filePath' is empty or unreadable."
