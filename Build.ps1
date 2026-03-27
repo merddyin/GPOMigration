@@ -302,7 +302,16 @@ if ($TestBuildAndInstallModule) {
 }
 
 if ($BuildModule -or $UploadPSGallery -or $CreatePSGalleryPackage -or ($PSBoundParameters.Count -eq 0)) {
-    Sync-ModuleManifest
+    try {
+        Sync-ModuleManifest
+    }
+    catch {
+        if ($UpdateRelease) {
+            throw
+        }
+
+        Write-Warning "Build.ps1: manifest synchronization was skipped: $($_.Exception.Message)"
+    }
     Invoke-BuildRelease
 }
 
